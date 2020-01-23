@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nameError">\"enter valid name\"</string>
+    <string name="emailError">\"enter valid email\"</string>
+    <string name="phoneError">\"enter valid phone\"</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+        <EditText
+            android:elevation="10dp"
+           android:layout_margin="8dp"
+            android:padding="15dp"
+            android:id="@+id/eshop"
+
+             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Find Beast Deal"
+            android:focusableInTouchMode="true"
+            android:background="@drawable/input_design"
+             />
+
+
+</androidx.appcompat.widget.Toolbar>

@@ -23,7 +23,7 @@ public class CheckoutAdapter extends RecyclerView.Adapter<CheckoutAdapter.MyView
 
       Map map;
 
-Data1 data;
+      Data1 data;
 
      int total_price;
         Context context;

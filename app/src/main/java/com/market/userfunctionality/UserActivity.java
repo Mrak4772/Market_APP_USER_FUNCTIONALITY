@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.market.userfunctionality.ui.home.HomeFragment;
@@ -15,61 +16,60 @@ import com.market.userfunctionality.ui.mycart.MyCartFragment;
 import com.market.userfunctionality.ui.products.ProductDetailFragment;
 import com.market.userfunctionality.ui.profile.ProfileFragement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-
-public class UserActivity extends AppCompatActivity implements ProductDetailFragment.BackPressed , CheckoutAdapter.Data1, CartAdapter.MapSetter, CheckOutDialogFragment.ResetMap {
+public class UserActivity extends AppCompatActivity implements ProductDetailFragment.BackPressed, CheckoutAdapter.Data1, CartAdapter.MapSetter, CheckOutDialogFragment.ResetMap, CartAdapter.Data2 {
     HashMap<Integer, String> quantityMap;
 
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-      @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
-     super.onCreate(savedInstanceState);
-     setContentView(R.layout.activity_user);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user);
 
 
-     quantityMap = new HashMap<Integer, String>();
+        quantityMap = new HashMap<Integer, String>();
 
 
-     BottomNavigationView bottomNavigationView=findViewById(R.id.navigation_bottom);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.navigation_bottom);
 
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-     getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-     getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,new HomeFragment()).commit();
-       // viewPager=findViewById(R.id.slider);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, new HomeFragment()).commit();
+        // viewPager=findViewById(R.id.slider);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
-          bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-              @Override
-              public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                  Fragment selectFragment=null;
-                  switch (menuItem.getItemId()){
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                Fragment selectFragment = null;
+                switch (menuItem.getItemId()) {
 
-                      case R.id.navigation_shop:
-                          selectFragment=new HomeFragment();
-                          break;
+                    case R.id.navigation_shop:
+                        selectFragment = new HomeFragment();
+                        break;
 
-                      case R.id.navigation_cart:
-                          selectFragment=new MyCartFragment();
+                    case R.id.navigation_cart:
+                        selectFragment = new MyCartFragment();
 
-                          break;
+                        break;
 
-                      case R.id.navigation_profile:
-                          selectFragment=new ProfileFragement();
-                   }
+                    case R.id.navigation_profile:
+                        selectFragment = new ProfileFragement();
+                }
 
-                  getSupportFragmentManager().beginTransaction().replace(R.id.frame_container,selectFragment).commit();
-                  return true;
-              }
-          });
+                getSupportFragmentManager().beginTransaction().replace(R.id.frame_container, selectFragment).commit();
+                return true;
+            }
+        });
 
 
     }
@@ -83,17 +83,25 @@ public class UserActivity extends AppCompatActivity implements ProductDetailFrag
 
     @Override
     public void data(TextView a, int position) {
+
         if(quantityMap.containsKey(position)){
-        a.setText(quantityMap.get(position).toString());
-         }
+            a.setText(quantityMap.get(position));
+        } else {
+            a.setText("1");
 
-         else{
-             a.setText("1");
-
-            }
+        }
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//try{
+//    a.setText(quantityMap.get(position));
+//}catch (Exception e){
+//    e.printStackTrace();
+//}
+    }
 
     @Override
     public void setMap(int position, int count) {
@@ -104,7 +112,7 @@ public class UserActivity extends AppCompatActivity implements ProductDetailFrag
     public void onBackPressed() {
 
         super.onBackPressed();
-      quantityMap.clear();
+        quantityMap.clear();
 
 
     }
@@ -114,5 +122,19 @@ public class UserActivity extends AppCompatActivity implements ProductDetailFrag
     public void hashMapHandle() {
         quantityMap.clear();
     }
-}
 
+    @Override
+    public void data2(TextView a, int position) {
+
+        if (quantityMap.containsKey(position)) {
+            a.setText(quantityMap.get(position));
+        } else {
+            System.out.println(quantityMap);
+            Toast.makeText(this, "not founfd", Toast.LENGTH_SHORT).show();
+
+
+        }
+
+
+    }
+}

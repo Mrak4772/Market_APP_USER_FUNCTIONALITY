@@ -1,5 +1,6 @@
 package com.market.userfunctionality;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         this.context = context;
         this.listProduct = listProduct;
      }
-
 
 
     @NonNull

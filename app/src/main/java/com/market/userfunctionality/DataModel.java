@@ -1,6 +1,8 @@
 package com.market.userfunctionality;
 
-public class DataModel   {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class DataModel implements Searchable {
 
     String cat_name;
     public String cat_id;
@@ -59,6 +61,10 @@ public class DataModel   {
         this.product_brand = product_brand;
         this.product_des = product_des;
         this.product_sku = product_sku;
+
+    }
+
+    public DataModel(ProductAdapter adapter_product) {
 
     }
 
@@ -144,4 +150,8 @@ public class DataModel   {
     }
 
 
+    @Override
+    public String getTitle() {
+        return product_name;
+    }
 }

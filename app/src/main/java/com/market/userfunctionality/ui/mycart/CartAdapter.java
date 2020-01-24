@@ -24,10 +24,9 @@ import androidx.recyclerview.widget.RecyclerView;
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> implements MyCartFragment.ShowTotal
 {
     MapSetter mapSetter;
-
-    public interface MapSetter {
-        public void setMap(int position,int count);
-    }
+    public static int count = 1;
+    public static int count_minus = 1;
+    Data2 data2;
 
 
 
@@ -42,48 +41,19 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
 
 
     int total_price;
-    int count=1 ;
-    TextView tvTotal;
-    Activity activity;
-    Context context;
-
-
-
-
-    ArrayList<DataModel> listProduct_cart;
-    private   int totalPrice;
-    private int price = 0;
-
-    public CartAdapter(Context context , ArrayList<DataModel> listProduct  ) {
-        this.context = context;
-        this.listProduct_cart = listProduct;
-
-
-
-    }
-
     public CartAdapter(Context context, ArrayList<DataModel> listProduct, TextView totlacart) {
         this.context = context;
         this.listProduct_cart = listProduct;
         this.tvTotal=totlacart;
         mapSetter = (MapSetter) context;
-    }
-
-    public CartAdapter() {
-
-    }
-
-    @NonNull
-    @Override
-    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        //price= (Price) context;
-        return new CartAdapter.MyViewHolder(LayoutInflater.from(context).inflate(R.layout.cart_item_layout,parent,false));
-
+        data2 = (Data2) context;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
+//        mapSetter.setMap(position, count);
+
+
         total_price= Integer.parseInt(listProduct_cart.get(position).getProduct_price());
 
 
@@ -101,9 +71,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 count++;
 //            final SharedPreferences sharedPref = context.getSharedPreferences("itemsqty",Context.MODE_PRIVATE);
 //            final Map<String,?> keys = sharedPref.getAll();
-                holder. quantity.setText(String.valueOf(count));
+                holder.quantity.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.quantity.getText())) + 1));
 
-                mapSetter.setMap(position, count);
+                mapSetter.setMap(position, Integer.parseInt(String.valueOf(holder.quantity.getText())));
 
 
             }
@@ -111,17 +81,17 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         holder.subtraction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                count_minus = Integer.parseInt(String.valueOf(holder.quantity.getText()));
 
-                if (count>1){
+                if (count_minus > 1) {
+
                     int textViewPrice = Integer.parseInt(tvTotal.getText().toString());
                     int itemPrice = Integer.parseInt(listProduct_cart.get(position).getProduct_price());
                     int totalPrice = textViewPrice - itemPrice;
                     tvTotal.setText(String.valueOf(totalPrice));
-
-
-                    count--;
-                    holder. quantity.setText(String.valueOf(count));
-
+                    count_minus--;
+                    holder.quantity.setText(String.valueOf(Integer.parseInt(String.valueOf(holder.quantity.getText())) - 1));
+                    mapSetter.setMap(position, Integer.parseInt(String.valueOf(holder.quantity.getText())));
                 }}
         });
         //  holder. quantity.setText(String.valueOf(count));
@@ -151,6 +121,24 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 removePosition(current_position);
             }
         });
+        //  data2.data2(holder.quantity,position);
+
+    }
+
+    TextView tvTotal;
+    Activity activity;
+    Context context;
+
+
+    ArrayList<DataModel> listProduct_cart;
+    private int totalPrice;
+    private int price = 0;
+
+    public CartAdapter(Context context, ArrayList<DataModel> listProduct) {
+        this.context = context;
+        this.listProduct_cart = listProduct;
+
+
     }
 
     private void removePosition(int current_position) {
@@ -158,11 +146,38 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
                 "cartItems", Context.MODE_PRIVATE).edit();
 
         String productId = listProduct_cart.get(current_position).getProduct_id();
-        sharedPref.remove(productId).commit();
+
+        // change with commit
+        //TODO
+
+        sharedPref.remove(productId).apply();
         notifyItemRemoved(current_position);
         listProduct_cart.remove(current_position);
 
 
+    }
+
+    public CartAdapter() {
+
+    }
+
+    @NonNull
+    @Override
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        //price= (Price) context;
+        return new CartAdapter.MyViewHolder(LayoutInflater.from(context).inflate(R.layout.cart_item_layout, parent, false));
+
+    }
+
+    public interface Data2 {
+        void data2(TextView a, int position);
+    }
+
+    //
+
+    public interface MapSetter {
+        void setMap(int position, int count);
     }
 
     @Override

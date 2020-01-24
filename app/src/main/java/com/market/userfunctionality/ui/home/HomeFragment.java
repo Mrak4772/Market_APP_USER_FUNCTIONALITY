@@ -2,11 +2,16 @@ package com.market.userfunctionality.ui.home;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.chootdev.recycleclick.RecycleClick;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.market.userfunctionality.CustomAdapter;
+import com.market.userfunctionality.CustomDialogCheck;
 import com.market.userfunctionality.DataModel;
 import com.market.userfunctionality.ProductAdapter;
 import com.market.userfunctionality.R;
@@ -24,24 +30,34 @@ import com.market.userfunctionality.ui.products.ProductDetailFragment;
 import com.market.userfunctionality.ui.products.ProductFragment;
 import com.market.userfunctionality.ui.products.SpacingItemDecoration;
 import com.market.userfunctionality.ui.products.Tools;
+import com.rey.material.app.SimpleDialog;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
+import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
+import ir.mirrajabi.searchdialog.core.Searchable;
 
 public class HomeFragment extends Fragment {
-String imgeUri;
-       DatabaseReference databaseReference;
+    String imgeUri;
+    DatabaseReference databaseReference;
     private ArrayList<DataModel> listData_random = new ArrayList<>();
     private ProductAdapter adapter_product;
+    String product_name;
     private DatabaseReference dbref;
       // LinearLayout layout_dots;
+
+
     ViewPager viewPager;
     // ViewFlipper viewFlipper;
     RelativeLayout viewpagerrelative;
@@ -55,8 +71,20 @@ String imgeUri;
   ArrayList<SLiderModel>Slide_list_images;
     WormDotsIndicator dotsIndicator;
 
+    // ading search view
+    //   ImageButton btn_search;
 
-  //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    //CardView btn_search;
+    LinearLayout linearLayout_search;
+
+    protected void getView(View view) {
+
+
+    }
+
+    // CardView linearLayout_search;
+
+    //    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public View onCreateView(@NonNull LayoutInflater inflater,
                              final ViewGroup container, Bundle savedInstanceState) {
         final View root=inflater.inflate(R.layout.fragment_home,container,false);
@@ -68,6 +96,9 @@ String imgeUri;
 
         //    ((AppCompatActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#33000000")));
 
+
+        linearLayout_search = root.findViewById(R.id.linear_search_second);
+        //     btn_search=root.findViewById(R.id.btn_search);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             viewPager.setClipToOutline(true);
@@ -149,7 +180,7 @@ String imgeUri;
 
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
 
-                            String product_name  = dataSnapshot1.child("product_name").getValue(String.class);
+                        product_name = dataSnapshot1.child("product_name").getValue(String.class);
                             String product_id=dataSnapshot1.child("product_id").getValue(String.class);
                             String product_image_uri=dataSnapshot1.child("product_image_uri").getValue(String.class);
                             String product_price=dataSnapshot1.child("product_price").getValue(String.class);
@@ -159,15 +190,43 @@ String imgeUri;
                              String cat_id=dataSnapshot1.getKey();
                             listData_random.add(new DataModel(product_id,product_name,product_image_uri,product_price,product_sku,product_brand,product_des,cat_id));
 
+
+                        linearLayout_search.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+
+                                new CustomDialogCheck<>(getActivity(), "enter product name here", "search the products",
+
+                                        null, listData_random, new SearchResultListener<DataModel>() {
+                                    @Override
+
+
+                                    public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, DataModel dataModel, int i) {
+
+                                        getFragmentManager()
+
+                                                .beginTransaction()
+                                                .replace(R.id.frame_container,
+                                                        new ProductDetailFragment(dataModel.getCat_id(), dataModel.getProduct_image_uri(), dataModel.getProduct_des(), dataModel.getProduct_name(), dataModel.getProduct_sku(), dataModel.getProduct_price()
+                                                                , listData.get(i).getProduct_id()))
+                                                .commit();
+                                        baseSearchDialogCompat.dismiss();
+
+
+                                        Toast.makeText(getActivity(), "clicked" + dataModel.getProduct_name(), Toast.LENGTH_SHORT).show();
+
+                                    }
+                                }).show();
+
+                            }
+                        });
+
                     }
 
+                adapter_product = new ProductAdapter(getActivity(), listData_random);
+                recycler_products.setAdapter(adapter_product);
 
-
-
-
-                adapter_product
-                        =new ProductAdapter(getActivity(),listData_random);
-recycler_products.setAdapter(adapter_product);
 
 
 
@@ -200,6 +259,15 @@ recycler_products.setAdapter(adapter_product);
 
 
     }
+
+//    private ArrayList<DataModel> initData() {
+//
+//        ArrayList<DataModel>items=new ArrayList<>();
+//
+//
+//        items.add(product_name) ;
+//          return items;
+//    }
 
 
     private void loadSliderImages(final View root) {

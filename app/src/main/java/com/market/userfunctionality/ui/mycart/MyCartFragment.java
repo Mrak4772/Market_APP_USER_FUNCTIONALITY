@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyCartFragment extends Fragment implements View.OnClickListener  {
+public class MyCartFragment extends Fragment implements OnClickListener {
 
     private ArrayList<DataModel> listData = new ArrayList<>();
     String product_price;
@@ -51,7 +52,9 @@ public class MyCartFragment extends Fragment implements View.OnClickListener  {
     TextView totlacart;
      ShowTotal showTotal;
     private int total  = 0;
-  //  View.OnClickListener myClickListener;
+    CheckOutDialogFragment.ResetMap resetMap;
+
+    //  View.OnClickListener myClickListener;
     private RecyclerView recyclerView;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -63,6 +66,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener  {
                         loadProductList(root);
 //        }
 
+        resetMap.hashMapHandle();
         cart_continue=root.findViewById(R.id.cart_continue_btn);
 
         totlacart=root.findViewById(R.id.total_price);
@@ -107,8 +111,10 @@ public class MyCartFragment extends Fragment implements View.OnClickListener  {
 
 
             adapter=new CartAdapter(getActivity(),listData,totlacart);
+
             recyclerView.setAdapter(adapter);
 
+            adapter.notifyDataSetChanged();
 
 
         //    recyclerView.setOnClickListener(myClickListener);
@@ -153,23 +159,31 @@ public class MyCartFragment extends Fragment implements View.OnClickListener  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        resetMap = (CheckOutDialogFragment.ResetMap) context;
+
 //        showTotal = (ShowTotal) context;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
 
     }
 
     @Override
     public void onClick(View v) {
 
-         Bundle bundle = new Bundle();
-       //  Intent intent=new Intent(context, SecondActivity.Class);
+        Bundle bundle = new Bundle();
+        //  Intent intent=new Intent(context, SecondActivity.Class);
 
         CheckOutDialogFragment fragment = new CheckOutDialogFragment(); // replace your custom fragment class
-      //  Bundle bundle = new Bundle();
+        //  Bundle bundle = new Bundle();
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-         // use as per your need
-    //    bundle.putParcelable("list_data", totlacart);
-    bundle.putString("list_data", String.valueOf(totlacart.getText()));
+        // use as per your need
+        //    bundle.putParcelable("list_data", totlacart);
+        bundle.putString("list_data", String.valueOf(totlacart.getText()));
 
         fragment.setArguments(bundle);
         fragmentTransaction.addToBackStack(null);
@@ -189,7 +203,7 @@ public class MyCartFragment extends Fragment implements View.OnClickListener  {
         void showPrice(TextView textView);
     }
 
-    private  class MyClickListener implements View.OnClickListener
+    private class MyClickListener implements OnClickListener
     {
 Context context;
         public MyClickListener(Context context) {
@@ -202,4 +216,6 @@ Context context;
             Toast.makeText(context, ""+recyclerView.getChildPosition(v), Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

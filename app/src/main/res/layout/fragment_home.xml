@@ -43,7 +43,7 @@
 
                 <LinearLayout
                     android:layout_marginTop="25dp"
-                    android:id="@+id/linear_top2"
+                    android:id="@+id/linear_top_search"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/ThemeOverlay.AppCompat.Light">
@@ -59,40 +59,37 @@
                         app:cardElevation="3dp">
 
                         <LinearLayout
+                            android:id="@+id/linear_search_second"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
 
-                            <ImageButton
-                                android:layout_width="?attr/actionBarSize"
-                                android:layout_height="?attr/actionBarSize"
+                            <TextView
+                                android:id="@+id/btn_search"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="5dp"
                                 android:background="@android:color/transparent"
+                                android:drawableEnd="@drawable/ic_search"
                                 android:tint="@color/grey_60"
-                                app:srcCompat="@drawable/ic_search" />
+                                android:padding="10dp" />
 
-                            <EditText
+                            <TextView
                                 android:id="@+id/et_search"
-                                android:layout_width="0dp"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_weight="1"
+
+                                android:layout_marginStart="50dp"
                                 android:background="@android:color/transparent"
-                                android:hint="Search product"
-                                android:imeOptions="actionSearch"
-                                android:maxLines="1"
-                                android:singleLine="true">
+                                android:layout_marginTop="10dp"
+                                android:hint="Search products"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+                                android:textSize="20sp"
+                                android:textStyle="bold">
 
-                                <requestFocus />
 
-                            </EditText>
+                            </TextView>
 
-                            <ImageButton
-                                android:id="@+id/bt_clear"
-                                android:layout_width="?attr/actionBarSize"
-                                android:layout_height="?attr/actionBarSize"
-                                android:background="@android:color/transparent"
-                                android:clickable="true"
-                                android:tint="@color/grey_60"
-                                app:srcCompat="@drawable/ic_close" />
 
                         </LinearLayout>
 
@@ -115,7 +112,7 @@
 
                         android:background="@drawable/input_design_home"
                         android:id="@+id/pager"
-                        android:layout_below="@+id/linear_top2"
+                        android:layout_below="@+id/linear_top_search"
                         android:layout_width="match_parent"
                         android:layout_margin="5dp"
                         android:layout_height="220dp"

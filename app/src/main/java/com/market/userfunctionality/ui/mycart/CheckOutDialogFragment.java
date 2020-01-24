@@ -177,7 +177,7 @@ mRef.addListenerForSingleValueEvent(new ValueEventListener() {
     }
 
     private void initToolbar(View root) {
-        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar_product1);
+        Toolbar toolbar = root.findViewById(R.id.toolbar_product1);
          toolbar.setNavigationIcon(R.drawable.ic_menu);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
 
@@ -300,7 +300,7 @@ mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             if (adress!=null){
 
                 Address returnAddress=addresses.get(0);
-                StringBuilder stringBuilder=new StringBuilder("");
+                StringBuilder stringBuilder = new StringBuilder();
                 for (int i=0;i<=returnAddress.getMaxAddressLineIndex();i++){
 
                     stringBuilder.append(returnAddress.getAddressLine(i)).append("\n");

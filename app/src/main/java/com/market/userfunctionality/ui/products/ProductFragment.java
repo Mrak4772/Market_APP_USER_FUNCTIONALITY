@@ -132,7 +132,7 @@ myClickListener = new MyClickListener(getContext());
 
                 }else{
                     for (DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                        String product_name  = dataSnapshot1.child("product_name").getValue(String.class);
+                        String product_name = dataSnapshot1.child("product_name").getValue(String.class);
                         String product_id=dataSnapshot1.child("product_id").getValue(String.class);
                         String product_image_uri=dataSnapshot1.child("product_image_uri").getValue(String.class);
                         String product_price=dataSnapshot1.child("product_price").getValue(String.class);

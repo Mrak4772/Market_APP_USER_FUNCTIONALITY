@@ -31,7 +31,7 @@ RelativeLayout relativeLayout;
         try{
 
 
-        if(user.equals(null)){
+            if (user == null) {
             progressBar.setVisibility(View.GONE);
             relativeLayout.setVisibility(View.VISIBLE);
         editTextMobile = findViewById(R.id.editTextPhone);

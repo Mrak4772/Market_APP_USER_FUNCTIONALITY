@@ -196,13 +196,14 @@ public class HomeFragment extends Fragment {
                             public void onClick(View v) {
 
 
-                                new CustomDialogCheck<>(getActivity(), "enter product name here", "search the products",
+                                new SimpleSearchDialogCompat<>(getActivity(), "enter product name here", "search the products",
 
                                         null, listData_random, new SearchResultListener<DataModel>() {
                                     @Override
 
 
                                     public void onSelected(BaseSearchDialogCompat baseSearchDialogCompat, DataModel dataModel, int i) {
+
 
                                         getFragmentManager()
 

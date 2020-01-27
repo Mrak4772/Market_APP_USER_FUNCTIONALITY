@@ -41,7 +41,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
       //  holder.name_product.setText(listProduct.get(position).getProduct_name());
         holder.product_price.setText("RS. "+listProduct.get(position).getProduct_price());
 
-        holder.product_des.setText(listProduct.get(position).getProduct_des());
+        holder.product_des.setText(listProduct.get(position).getProduct_name());
         Glide.with(context).load(listProduct.get(position).getProduct_image_uri() ).into(holder.image_product)  ;
 
 

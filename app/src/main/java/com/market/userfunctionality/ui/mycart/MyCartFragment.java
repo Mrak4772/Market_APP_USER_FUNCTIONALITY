@@ -2,6 +2,8 @@ package com.market.userfunctionality.ui.mycart;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -34,6 +36,7 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -54,6 +57,7 @@ public class MyCartFragment extends Fragment implements OnClickListener {
     private int total  = 0;
     CheckOutDialogFragment.ResetMap resetMap;
 
+    CoordinatorLayout parentView;
     //  View.OnClickListener myClickListener;
     private RecyclerView recyclerView;
 
@@ -75,6 +79,7 @@ public class MyCartFragment extends Fragment implements OnClickListener {
 
 //        totlacart.setText(c);
 
+        parentView = root.findViewById(R.id.parent_view);
                return root;
     }
    private void loadProductList(final View root) {
@@ -101,6 +106,7 @@ public class MyCartFragment extends Fragment implements OnClickListener {
                         String product_brand=dataSnapshot1.child("product_brand").getValue(String.class);
                         String product_des=dataSnapshot1.child("product_des").getValue(String.class);
                         listData.add(new DataModel(product_id,product_name,product_image_uri,product_price,product_brand,product_des));
+
                     }
                     }
                 }
@@ -117,24 +123,29 @@ public class MyCartFragment extends Fragment implements OnClickListener {
             adapter.notifyDataSetChanged();
 
 
-        //    recyclerView.setOnClickListener(myClickListener);
+            if (listData.size() == 0) {
 
-//            RecycleClick.addTo(recyclerView).setOnItemClickListener(new RecycleClick.OnItemClickListener() {
-//                @Override
-//                public void onItemClicked(RecyclerView recyclerView, int i, View view) {
-//
-//                    Toast.makeText(getContext(), "item click"+i, Toast.LENGTH_SHORT).show();
-//
-//                }
-//            });
-//            foreach(List<DataModel> data: listData)
+                parentView.setBackgroundResource(R.drawable.cart);
+
+            }
+
+
             for (DataModel data: listData) {
                total = total+Integer.parseInt(data.getProduct_price());
             }
             totlacart.setText(String.valueOf(total));
 
-//            showTotal.showPrice(totlacart);
 
+            if (total == 0) {
+
+                cart_continue.setBackgroundResource(R.drawable.silver_backgroundbtn);
+                cart_continue.setEnabled(false);
+
+                cart_continue.setClickable(false);
+                Toast.makeText(getActivity(), "CART IS EMPTY", Toast.LENGTH_SHORT).show();
+
+//            showTotal.showPrice(totlacart);
+            }
 
 
 

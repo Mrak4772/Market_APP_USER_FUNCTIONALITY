@@ -4,6 +4,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chootdev.recycleclick.RecycleClick;
@@ -30,6 +33,7 @@ import com.market.userfunctionality.ui.products.ProductDetailFragment;
 import com.market.userfunctionality.ui.products.ProductFragment;
 import com.market.userfunctionality.ui.products.SpacingItemDecoration;
 import com.market.userfunctionality.ui.products.Tools;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.rey.material.app.SimpleDialog;
 import com.tbuonomo.viewpagerdotsindicator.WormDotsIndicator;
 
@@ -56,8 +60,10 @@ public class HomeFragment extends Fragment {
     String product_name;
     private DatabaseReference dbref;
       // LinearLayout layout_dots;
+//textviews
+      TextView searchbtn, searchproduct;
 
-
+    MaterialSearchView materialSearchView;
     ViewPager viewPager;
     // ViewFlipper viewFlipper;
     RelativeLayout viewpagerrelative;
@@ -77,10 +83,6 @@ public class HomeFragment extends Fragment {
     //CardView btn_search;
     LinearLayout linearLayout_search;
 
-    protected void getView(View view) {
-
-
-    }
 
     // CardView linearLayout_search;
 
@@ -99,6 +101,9 @@ public class HomeFragment extends Fragment {
 
         linearLayout_search = root.findViewById(R.id.linear_search_second);
         //     btn_search=root.findViewById(R.id.btn_search);
+
+        searchbtn = root.findViewById(R.id.btn_search);
+        searchproduct = root.findViewById(R.id.et_search);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             viewPager.setClipToOutline(true);
@@ -260,15 +265,6 @@ public class HomeFragment extends Fragment {
 
 
     }
-
-//    private ArrayList<DataModel> initData() {
-//
-//        ArrayList<DataModel>items=new ArrayList<>();
-//
-//
-//        items.add(product_name) ;
-//          return items;
-//    }
 
 
     private void loadSliderImages(final View root) {

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.market.userfunctionality.DataModel;
@@ -19,6 +20,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> implements MyCartFragment.ShowTotal
@@ -153,6 +157,20 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
         sharedPref.remove(productId).apply();
         notifyItemRemoved(current_position);
         listProduct_cart.remove(current_position);
+        if (listProduct_cart.size() == 0) {
+
+            Toast.makeText(context, "your cart is empty", Toast.LENGTH_SHORT).show();
+            tvTotal.setText("0");
+
+
+            FragmentManager manager = ((AppCompatActivity)
+                    context).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = manager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container, new MyCartFragment());
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+
+        }
 
 
     }
@@ -165,7 +183,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.MyViewHolder> 
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //price= (Price) context;
+        // price= (Price) context;
         return new CartAdapter.MyViewHolder(LayoutInflater.from(context).inflate(R.layout.cart_item_layout, parent, false));
 
     }

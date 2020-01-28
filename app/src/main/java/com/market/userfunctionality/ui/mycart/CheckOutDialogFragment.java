@@ -83,10 +83,10 @@ public class CheckOutDialogFragment extends BottomSheetDialogFragment {
     //  TextView shippingAddress;
 
     TextView totalCart;
-   // private FusedLocationProviderClient fusedLocationClient;
+    //    private FusedLocationProviderClient fusedLocationClient;
 
-  //  private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
-
+    //   private static final int LOCATION_PERMISSION_REQUEST_CODE = 2;
+    ImageView getCureentclick;
 
 
     //private TextView currentAddTv;
@@ -94,7 +94,7 @@ public class CheckOutDialogFragment extends BottomSheetDialogFragment {
     private Location currentLocation;
 
     private LocationCallback locationCallback;
-
+    FusedLocationProviderClient fusedLocationClient, fusedLocationClient2;
       @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -110,7 +110,25 @@ public class CheckOutDialogFragment extends BottomSheetDialogFragment {
 
         loadProductList(root);
 
+          fusedLocationClient2 = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
 
+
+          fusedLocationClient2.getLastLocation().addOnSuccessListener(Objects.requireNonNull(getActivity()), new OnSuccessListener<Location>() {
+              @Override
+              public void onSuccess(Location location) {
+                  if (location != null) {
+
+                      lat = location.getLatitude();
+                      longitud = location.getLongitude();
+
+                      shippingAddress.setText(getCompleteAddress(lat, longitud));
+
+
+                  }
+
+
+              }
+          });
          Bundle bundle = new Bundle();
  String tv=getArguments().getString("list_data");
 
@@ -121,39 +139,42 @@ public class CheckOutDialogFragment extends BottomSheetDialogFragment {
              totalCart.setText( tv );
               setHasOptionsMenu(true);
 
-     FusedLocationProviderClient  fusedLocationClient= LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
+          fusedLocationClient = LocationServices.getFusedLocationProviderClient(Objects.requireNonNull(getActivity()));
 
-            shippingAddress =root.findViewById(R.id.shipping_current_addresss);
 
-          final ImageView getCureentclick=root.findViewById(R.id.get_current_address_click);
+          shippingAddress = root.findViewById(R.id.shipping_current_addresss);
+
+          getCureentclick = root.findViewById(R.id.get_current_address_click);
           getCureentclick.setOnClickListener(new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                  shippingAddress.setText(getCompleteAddress(lat,longitud));
+//                 shippingAddress.setText(getCompleteAddress(lat,longitud) );
+
+
+                  fusedLocationClient.getLastLocation().addOnSuccessListener(Objects.requireNonNull(getActivity()), new OnSuccessListener<Location>() {
+                      @Override
+                      public void onSuccess(Location location) {
+                          if (location != null) {
+
+                              lat = location.getLatitude();
+                              longitud = location.getLongitude();
+
+                              shippingAddress.setText(getCompleteAddress(lat, longitud));
+
+
+                          }
+
+
+                      }
+                  });
+
               }
           });
 
           //    shippingAddress.setText(getCompleteAddress(la));
 
 
-          fusedLocationClient.getLastLocation().addOnSuccessListener(Objects.requireNonNull(getActivity()), new OnSuccessListener<Location>() {
-                  @Override
-                  public void onSuccess(Location location) {
-                 if (location!=null)
-                 {
 
-                     lat=location.getLatitude();
-                     longitud=location.getLongitude();
-
-                                 shippingAddress.setText(getCompleteAddress(lat,longitud));
-
-
-
-                  }
-
-
-                  }
-              });
 
           final String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
           DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("customer").child(currentUserID);
